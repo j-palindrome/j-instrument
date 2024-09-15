@@ -1,0 +1,6 @@
+electron/node_modules
+electron/build
+electron/out
+**/.DS_Store
+.DS_Store
+assets
