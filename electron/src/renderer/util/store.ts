@@ -1,6 +1,6 @@
 import { mtof } from './../util/util'
 import { produce } from 'immer'
-import _ from 'lodash'
+import _, { range } from 'lodash'
 import { useRef } from 'react'
 import { createWithEqualityFn } from 'zustand/traditional'
 import { generateFunctionPoints } from '../audio/audio-util'
@@ -11,33 +11,15 @@ export const LENGTH = 1800
 
 export type AppState = {
   ramp: number
-  midi: {
-    range: [number, number]
-    scale: number[]
-    notes: { key: number; started: false | number }[]
-  }
-  audio: {
-    points: number[]
-    points2: number[]
-    speed: number
-    mode: 'xor' | 'xorLR'
-  }
-  values: number[]
-  newNote: { voice: number; value: number; velocity: boolean }
+  scale: number[]
+  notes: { key: number; started: false | number }[]
 }
 
 export const useAppStore = createWithEqualityFn<AppState>(() => {
   const state: AppState = {
     ramp: 0.2,
-    midi: { scale: [1], range: [0, 1], notes: _.range(6).map(() => ({ key: 0, started: false })) },
-    audio: {
-      points: _.range(LENGTH).map(() => 0),
-      points2: _.range(LENGTH).map(() => 0),
-      speed: 100,
-      mode: 'xor'
-    },
-    values: [],
-    newNote: { voice: 0, value: 0, velocity: false }
+    scale: [0, 0],
+    notes: range(6).map(() => ({ key: 0, started: false }))
   }
   return state
 })

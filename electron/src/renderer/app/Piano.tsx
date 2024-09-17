@@ -13,6 +13,8 @@ export default function Piano() {
   useEventListener(
     'keydown',
     (ev: KeyboardEvent) => {
+      console.log('keydown');
+      
       const keyString = ev.key.replace('Key', '').toLowerCase()
       const key = keys.indexOf(keyString)
       if (key === -1) return
