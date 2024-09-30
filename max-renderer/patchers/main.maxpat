@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 674.0, 115.0, 572.0, 651.0 ],
+		"rect" : [ 37.0, 115.0, 556.0, 651.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 10.0,
@@ -43,9 +43,34 @@
 					"id" : "obj-14",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 372.0, 571.0, 33.0, 21.0 ],
+					"text" : "s IN"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-16",
+					"maxclass" : "message",
+					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 346.0, 30.0, 100.0, 21.0 ]
+					"patching_rect" : [ 158.0, 413.0, 45.0, 21.0 ],
+					"text" : "reload"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-11",
+					"maxclass" : "jweb",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 372.0, 322.0, 573.0, 234.0 ],
+					"rendermode" : 1,
+					"url" : "http://localhost:3000"
 				}
 
 			}
@@ -64,12 +89,12 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-12",
-					"linecount" : 9,
+					"linecount" : 11,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 30.0, 332.0, 310.0, 117.0 ],
-					"text" : "main renderer, open patches to use\n\"speeches\"\n\"square\"\n\ngo to \"electron\" and run these Terminal commands:\n- npm install\n- npm run dev\n\nto use the controller (which sends OSC to Max)"
+					"patching_rect" : [ 30.0, 322.0, 310.0, 142.0 ],
+					"text" : "main renderer, open patches to use\n\"speeches\"\n\"square\"\n\ngo to \"controls\" and run these Terminal commands:\n- npm install\n- npm run dev\n\nthen hit \"reload\"\n\nto use the controller (which sends OSC to Max)"
 				}
 
 			}
@@ -199,8 +224,23 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-14", 0 ],
+					"source" : [ "obj-11", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-9", 0 ],
 					"source" : [ "obj-13", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-11", 0 ],
+					"midpoints" : [ 167.5, 444.0, 359.5, 444.0, 359.5, 311.0, 381.5, 311.0 ],
+					"source" : [ "obj-16", 0 ]
 				}
 
 			}
