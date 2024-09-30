@@ -2,8 +2,8 @@
 	"name" : "max-renderer",
 	"version" : 1,
 	"creationdate" : 3804465876,
-	"modificationdate" : 3805133350,
-	"viewrect" : [ 641.0, 115.0, 639.0, 651.0 ],
+	"modificationdate" : 3810124208,
+	"viewrect" : [ 640.0, 115.0, 640.0, 651.0 ],
 	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
 	"showdependencies" : 1,
@@ -27,6 +27,21 @@
 			}
 ,
 			"vocal-fx.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"industrialization.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"piano.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"distortion.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}

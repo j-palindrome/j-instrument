@@ -1,7 +1,4 @@
 import * as math from 'mathjs'
-import { AppState, LENGTH } from '../util/store'
-import _ from 'lodash'
-import { mapScale } from '../util/scaling'
 
 const xor = (notes: number[], i: number): [number, number] => {
   if (notes.length === 0) return [0, 0]
@@ -26,24 +23,12 @@ const xor = (notes: number[], i: number): [number, number] => {
   } else return [0, 0]
 }
 
-const xorLR = xor
-
-export const generateFunctionPoints = (
-  notes: number[],
-  audio: AppState['audio']
-): [number[], number[]] => {
+export const generateFunctionPoints = (notes: number[]): [number[], number[]] => {
   const points: number[] = []
   const points2: number[] = []
 
-  const modes: Record<
-    AppState['audio']['mode'],
-    (voices: number[], i: number) => [number, number]
-  > = {
-    xor,
-    xorLR
-  }
   for (let i = 0; i < 1024; i++) {
-    const gen = modes[audio.mode](notes, i)
+    const gen = xor(notes, i)
     points.push(gen[0])
     points2.push(gen[1])
   }

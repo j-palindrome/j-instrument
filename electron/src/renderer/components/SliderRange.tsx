@@ -3,6 +3,7 @@ import { scale as scaleFunction, useRefAsState } from '../util/util'
 import { setters, useAppStore } from '../util/store'
 import { useDrag } from '../util/useDrag'
 import _ from 'lodash'
+import { keys } from '../app/scaling'
 
 export default function SliderRange({
   range: [min, max],
@@ -31,7 +32,7 @@ export default function SliderRange({
     onChange([lowValue, highValue])
   }, [start, end])
 
-  const scale = useAppStore((state) => state.midi.scale)
+  const scale = useAppStore((state) => state.scale)
 
   const baseValue = useDrag(
     ({ x, y }) => {
@@ -92,18 +93,46 @@ export default function SliderRange({
           <ScaleNumber i={i} />
         ))}
         <div className="grow"></div>
-        <button onClick={() => setters.setMidi({ scale: scale.concat(1) })}>+</button>
+        <button onClick={() => setters.setScale({ scale: scale.concat(1) })}>+</button>
         {scale.length > 1 && (
-          <button onClick={() => setters.setMidi({ scale: scale.slice(0, -1) })}>-</button>
+          <button onClick={() => setters.setScale({ scale: scale.slice(0, -1) })}>-</button>
         )}
-        <button onClick={() => setters.setMidi({ scale: _.reverse([...scale]) })}>I</button>
-        <button onClick={() => setters.setMidi({ scale: scale.slice(1).concat(scale[0]) })}>
+        <button onClick={() => setters.setScale({ scale: _.reverse([...scale]) })}>I</button>
+        <button onClick={() => setters.setScale({ scale: scale.slice(1).concat(scale[0]) })}>
           {'<'}
         </button>
         <button
           onClick={() =>
-            setters.setMidi({ scale: [scale[scale.length - 1]].concat(scale.slice(0, -1)) })
+            setters.setScale({ scale: [scale[scale.length - 1]].concat(scale.slice(0, -1)) })
           }
+        >
+          {'>'}
+        </button>
+      </div>
+      <div className="flex">
+        <button
+          onClick={() => {
+            setEnd(start + (frameWidth / 127) * (keys.length + 1))
+          }}
+        >
+          3 octaves
+        </button>
+
+        <button
+          onClick={() => {
+            if (start - (frameWidth / 127) * 12 < 0) return
+            setStart(start - (frameWidth / 127) * 12)
+            setEnd(end - (frameWidth / 127) * 12)
+          }}
+        >
+          {'<'}
+        </button>
+        <button
+          onClick={() => {
+            if (end + (frameWidth / 127) * 12 > 1) return
+            setStart(start + (frameWidth / 127) * 12)
+            setEnd(end + (frameWidth / 127) * 12)
+          }}
         >
           {'>'}
         </button>
@@ -113,13 +142,13 @@ export default function SliderRange({
 }
 
 function ScaleNumber({ i }: { i: number }) {
-  const scale = useAppStore((state) => state.midi.scale)
+  const scale = useAppStore((state) => state.scale)
   const drag = useDrag(
     ({ y }) => {
       const newScale = [...scale]
       newScale[i] += y > 0 ? 1 : -1
       if (newScale[i] < 1) newScale[i] = 1
-      setters.setMidi({ scale: newScale })
+      setters.setScale({ scale: newScale })
     },
     [scale[i]],
     25

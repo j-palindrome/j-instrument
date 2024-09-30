@@ -1,66 +1,61 @@
-import { mtof } from './../util/util'
 import { produce } from 'immer'
-import _, { range } from 'lodash'
+import { maxBy, range, sortBy } from 'lodash'
 import { useRef } from 'react'
 import { createWithEqualityFn } from 'zustand/traditional'
-import { generateFunctionPoints } from '../audio/audio-util'
-import renderAudio from '../audio/audio'
-import { mapScale } from '../util/scaling'
+import { mapScale } from '../app/scaling'
 
 export const LENGTH = 1800
 
+// lastUpdate is used to slice notes into things that have to be dealt with
 export type AppState = {
   ramp: number
   scale: number[]
-  notes: { key: number; started: false | number }[]
+  range: [number, number]
+  mappedScale: number[]
+  notes: { key: number; started: number; value: number; velocity: number }[]
+  lastUpdate: number
 }
 
 export const useAppStore = createWithEqualityFn<AppState>(() => {
   const state: AppState = {
     ramp: 0.2,
-    scale: [0, 0],
-    notes: range(6).map(() => ({ key: 0, started: false }))
+    scale: [1],
+    range: [0, 0],
+    notes: range(6).map(() => ({ key: 0, started: 0, value: 0, velocity: 0 })),
+    mappedScale: [],
+    lastUpdate: Date.now()
   }
   return state
 })
+
+export const useNewNotes = () => {
+  const newNotes = useAppStore((state) => state.notes.filter((x) => x.started >= state.lastUpdate))
+  return newNotes
+}
 
 const modify = (modifier: (state: AppState) => void) => {
   useAppStore.setState(produce(modifier))
 }
 
 export const setters = {
-  set: (newState: Partial<AppState>) => {
-    modify(() => newState)
-  },
-  setAudio: (newState: Partial<AppState['audio']>) => {
+  setScale: ({ scale, range }: Partial<Pick<AppState, 'scale' | 'range'>>) => {
     modify((state) => {
-      state.audio = { ...state.audio, ...newState }
-      updateValues(state)
-      updateAudio(state)
+      const mappedScale = mapScale(scale ?? state.scale, range ?? state.range)
+
+      return {
+        scale: scale ?? state.scale,
+        range: range ?? state.range,
+        mappedScale,
+        notes: state.notes.map((x) => ({ ...x, value: mappedScale[x.key] }))
+      }
     })
   },
-  setMidi: (newState: Partial<AppState['midi']>) => {
+  setNotes: (notes: AppState['notes'], lastUpdate: number) => {
     modify((state) => {
-      state.midi = { ...state.midi, ...newState }
-      updateValues(state)
+      state.notes = notes.map((x) => ({ ...x, value: state.mappedScale[x.key] }))
+      state.lastUpdate = lastUpdate
     })
   }
-}
-
-// CHANGE: only 6 values, if it's 0 then it's off. Earliest voice gets selected as 0 or else they are all turned off.
-const updateValues = (state: AppState) => {
-  const mappedScale = mapScale(state.midi.scale, state.midi.range)
-  const values = state.midi.notes.map((x) => (!x.started ? 0 : mtof(mappedScale[x.key])))
-  state.values = values
-}
-
-const updateAudio = (state: AppState) => {
-  const newPoints = generateFunctionPoints(state.values, state.audio)
-  state.audio.points = newPoints[0]
-  state.audio.points2 = newPoints[1]
-  state.audio.speed = mtof(state.values[0] ?? 0)
-  window.electron.ipcRenderer.send('message', 'notes', state.values)
-  renderAudio(state.audio)
 }
 
 export const getters = {

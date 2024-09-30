@@ -28,12 +28,13 @@ function createWindow(): void {
     return { action: 'deny' }
   })
 
-  const oscServer = new OscServer(7002, '127.0.0.1')
+  const oscServer = new OscServer(7002, 'localhost')
   // forward messages from Max
   oscServer.on('message', ([path, ...data]) => {
     console.log('forwarding message', path, ...data)
     mainWindow.webContents.send(path, ...data)
   })
+  console.log('created oscServer', oscServer)
 
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
@@ -95,11 +96,12 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  const osc = new OscClient('127.0.0.1', 7001)
+  const osc = new OscClient('localhost', 7001)
+  const oscIn = new OscServer(7002, 'localhost')
 
   // send messages to Max
-  ipcMain.on('osc', (ev, path, data) => {
-    osc.send(path, data)
+  ipcMain.on('osc', (ev, path, ...data) => {
+    osc.send(path, ...data)
   })
 
   ipcMain.on('view', (ev) => {

@@ -1,9 +1,13 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { useAppStore } from '../../util/store'
-import _, { times } from 'lodash'
+import _, { find, findIndex, maxBy, minBy, sortBy, times } from 'lodash'
+import { MIDI_BOTTOM, MIDI_TOP } from '../Piano'
+import { scale } from '../../util/util'
 
 export default function Lectures() {
-  const newNote = useAppStore((state) => state.newNote)
+  const newNote = useAppStore((state) => sortBy(state.notes, (x) => -x.started)[0])
+  const newVoice = useAppStore((state) => state.notes.indexOf(newNote))
+
   const totalTime = useRef([0, 0, 0, 0, 0, 0, 0, 0, 0])
   // each index is where that recording ends (in terms of total ms)
   const timeSums = useRef([0, 0, 0, 0, 0, 0, 0, 0, 0])
@@ -36,17 +40,16 @@ export default function Lectures() {
     // const formattedValues = `setvalue ${newNote.voice + 1} ${!newNote.velocity ? 'stop' : `start ${adjustedMilliseconds}`}`
 
     const totalTime = _.last(timeSums.current)!
-    let startTime = ((newNote.value + 50) / 220) * totalTime
+    let startTime = scale(newNote.value, MIDI_BOTTOM, MIDI_TOP, 0, 1) * totalTime
     // find the recording which ends before it
     const endsAfter = _.findLastIndex(timeSums.current, (ending) => ending < startTime)
-    console.log('ends after', endsAfter)
 
     if (endsAfter === -1) {
       // it's in the first recording
       window.electron.ipcRenderer.send(
         'osc',
         '/selectBuffer',
-        `setvalue ${newNote.voice + 1} set speeches.1`
+        `setvalue ${newVoice} set speeches.1`
       )
     } else {
       // it's after something
@@ -55,14 +58,14 @@ export default function Lectures() {
       window.electron.ipcRenderer.send(
         'osc',
         '/selectBuffer',
-        `setvalue ${newNote.voice + 1} set speeches.${endsAfter + 2}`
+        `setvalue ${newVoice} set speeches.${endsAfter + 2}`
       )
     }
 
     window.electron.ipcRenderer.send(
       'osc',
       '/values',
-      `setvalue ${newNote.voice + 1} ${!newNote.velocity ? `stop` : `start ${startTime}`}`
+      `setvalue ${newVoice} ${!newNote.started ? `stop` : `start ${startTime}`}`
     )
   }, [newNote])
 
@@ -70,7 +73,6 @@ export default function Lectures() {
     window.electron.ipcRenderer.on('/totalTime', (_ev, index: number, length: number) => {
       totalTime.current[index] = length
       timeSums.current = totalTime.current.map((x, i) => _.sum(totalTime.current.slice(0, i + 1)))
-      console.log('time updated:', totalTime.current, timeSums.current)
     })
   }, [])
 
@@ -79,7 +81,6 @@ export default function Lectures() {
       <select
         onChange={(ev) => {
           const val = Number(ev.target.value)
-          console.log('sending value', val)
           window.electron.ipcRenderer.send('osc', '/selectedBuffer', val)
         }}
       >

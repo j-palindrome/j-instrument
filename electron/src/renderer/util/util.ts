@@ -80,6 +80,8 @@ export const scale = <T extends number | number[]>(
   highOut: number,
   exp: number = 1
 ): T => {
+  console.log('scaling', input, low, high, lowOut, highOut)
+
   const scaleNumber = (input: number) => {
     if (high === low) return lowOut
     const zTo1 = ((input - low) / (high - low)) ** exp
