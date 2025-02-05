@@ -9,9 +9,10 @@ export default function Distortion() {
     for (let newNote of newNotes) {
       window.max?.outlet(
         '/note-in',
-        newNote.value * 5000,
-        newNote.velocity * 2 * newNote.value * 5000,
-        newNote.velocity ? 1 : 0
+        'setvalue',
+        newNote.voice,
+        Math.floor(newNote.value * 127),
+        newNote.velocity
       )
     }
   }, [newNotes])

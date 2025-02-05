@@ -2,8 +2,8 @@
 	"name" : "max-renderer",
 	"version" : 1,
 	"creationdate" : 3804465876,
-	"modificationdate" : 3810124208,
-	"viewrect" : [ 640.0, 115.0, 640.0, 651.0 ],
+	"modificationdate" : 3817169225,
+	"viewrect" : [ 0.0, 115.0, 1273.0, 604.0 ],
 	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
 	"showdependencies" : 1,
@@ -42,6 +42,21 @@
 			}
 ,
 			"distortion.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"windmaker.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"noise-voice.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"2024-12-15_denial.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}

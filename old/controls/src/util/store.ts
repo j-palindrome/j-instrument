@@ -13,7 +13,13 @@ export type AppState = {
   scale: number[]
   range: [number, number]
   mappedScale: number[]
-  notes: { key: number; started: number; value: number; velocity: number }[]
+  notes: {
+    key: number
+    started: number
+    value: number
+    velocity: number
+    voice: number
+  }[]
   lastUpdate: number
 }
 
@@ -22,7 +28,13 @@ export const useAppStore = create<AppState>(() => {
     ramp: 0.2,
     scale: [1],
     range: [0, 0],
-    notes: range(6).map(() => ({ key: 0, started: 0, value: 0, velocity: 0 })),
+    notes: range(6).map((x, i) => ({
+      key: 0,
+      started: 0,
+      value: 0,
+      velocity: 0,
+      voice: i + 1
+    })),
     mappedScale: [],
     lastUpdate: Date.now()
   }
@@ -55,7 +67,10 @@ export const setters = {
   },
   setNotes: (notes: AppState['notes'], lastUpdate: number) => {
     modify(state => {
-      state.notes = notes.map(x => ({ ...x, value: state.mappedScale[x.key] }))
+      state.notes = notes.map(x => ({
+        ...x,
+        value: state.mappedScale[x.key]
+      }))
       state.lastUpdate = lastUpdate
     })
   }

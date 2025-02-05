@@ -48,6 +48,7 @@ export default function Piano() {
     },
     []
   )
+
   useEventListener(
     'keyup',
     (ev: KeyboardEvent) => {
@@ -104,6 +105,7 @@ export default function Piano() {
       }
 
       newNotes[voiceIndex] = {
+        ...newNotes[voiceIndex],
         started,
         key,
         velocity: velocity.current,
@@ -136,7 +138,13 @@ export default function Piano() {
 
       const newNotes = [...notes]
       const started = Date.now()
-      newNotes[voiceIndex] = { started, key, velocity: 0, value: DUMMY }
+      newNotes[voiceIndex] = {
+        ...newNotes[voiceIndex],
+        started,
+        key,
+        velocity: 0,
+        value: DUMMY
+      }
       setters.setNotes(newNotes, started)
     },
     [notes]
