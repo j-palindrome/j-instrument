@@ -2,8 +2,8 @@
 	"name" : "max-renderer",
 	"version" : 1,
 	"creationdate" : 3804465876,
-	"modificationdate" : 3817169225,
-	"viewrect" : [ 0.0, 115.0, 1273.0, 604.0 ],
+	"modificationdate" : 3821703421,
+	"viewrect" : [ 721.0, 115.0, 719.0, 751.0 ],
 	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
 	"showdependencies" : 1,
@@ -57,6 +57,11 @@
 			}
 ,
 			"2024-12-15_denial.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"jitPathBrush.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
