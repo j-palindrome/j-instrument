@@ -4,7 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --watch src/server src/server/index.ts",
+    "dev": "pnpm launch:max ; pnpm launch:td ; pnpm launch:web ; pnpm serve",
+    "serve": "nodemon --watch src/server src/server/index.ts",
+    "launch:web": "open -na 'Google Chrome' --args --new-window --start-fullscreen http://localhost:7001",
+    "launch:max": "lsof | grep ../sound/max-renderer.maxproj || open ../sound/max-renderer/max-renderer.maxproj",
+    "launch:td": "ps aux | grep -i touchdesigner-renderer | grep -v grep | grep -v open || open ../visuals/touchdesigner-renderer.toe",
     "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"

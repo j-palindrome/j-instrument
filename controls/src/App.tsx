@@ -5,6 +5,7 @@ import { Socket, io } from 'socket.io-client'
 import { AsemicCanvas, useAsemic } from '../asemic/src/Asemic'
 import LineBrush from '../asemic/src/LineBrush'
 import DashBrush from '../asemic/src/DashBrush'
+import { GroupBuilder } from '../asemic/src/Builder'
 
 function App() {
   const [socket, setSocket] = useState<Socket<SocketEvents, SocketEvents>>()
@@ -56,7 +57,7 @@ function App() {
   return (
     <SocketProvider socket={socket}>
       <>
-        <AsemicCanvas useAudio outputChannel={20}>
+        <AsemicCanvas useAudio outputChannel={18}>
           <Scene />
         </AsemicCanvas>
       </>
@@ -67,10 +68,16 @@ function App() {
 export default App
 
 function Scene() {
-  useAsemic()
+  const { h } = useAsemic()
   return (
     <>
-      <LineBrush onInit={g => g.newCurve([0, 0], [1, 1])} />
+      <LineBrush
+        onInit={g =>
+          g
+            .newText('hello human, how are you', { thickness: 1 })
+            .setProcess('all', { width: 1, center: 0.5, middle: 0.5 * h })
+        }
+      />
     </>
   )
 }

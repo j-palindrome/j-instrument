@@ -10,19 +10,33 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ -1138.0, -35.0, 651.0, 651.0 ],
+		"rect" : [ 168.0, 192.0, 704.0, 574.0 ],
 		"default_fontsize" : 10.0,
 		"default_fontname" : "Fira Code Regular",
+		"gridonopen" : 2,
 		"gridsize" : [ 15.0, 15.0 ],
+		"gridsnaponopen" : 2,
 		"style" : "Joshua",
 		"subpatcher_template" : "Joshua",
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-3",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 285.0, 400.0, 100.0, 21.0 ],
+					"text" : "loadmess start"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-17",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 338.0, 494.0, 119.0, 21.0 ],
+					"patching_rect" : [ 342.0, 491.0, 119.0, 21.0 ],
 					"text" : "mc.s~ OUT @chans 2"
 				}
 
@@ -34,7 +48,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "multichannelsignal" ],
-					"patching_rect" : [ 338.0, 454.0, 100.0, 21.0 ],
+					"patching_rect" : [ 342.0, 450.0, 100.0, 21.0 ],
 					"text" : "mc.adc~ 19 20"
 				}
 
@@ -1294,7 +1308,7 @@
 
 							}
  ],
-						"originid" : "pat-12",
+						"originid" : "pat-8",
 						"styles" : [ 							{
 								"name" : "Joshua",
 								"default" : 								{
@@ -1555,6 +1569,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-7", 0 ],
+					"source" : [ "obj-3", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-28", 1 ],
 					"source" : [ "obj-30", 0 ]
 				}
@@ -1589,7 +1610,7 @@
 
 			}
  ],
-		"originid" : "pat-10",
+		"originid" : "pat-6",
 		"parameters" : 		{
 			"obj-19" : [ "live.gain~", "live.gain~", 0 ],
 			"obj-20" : [ "live.gain~[1]", "live.gain~", 0 ],

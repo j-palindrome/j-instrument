@@ -7,11 +7,12 @@ import path from 'node:path'
 import { Server as SocketServer } from 'socket.io'
 import ViteExpress from 'vite-express'
 import { Client, Server } from 'node-osc'
+import { exec } from 'child_process'
 
 const app = express()
 
 const server = ViteExpress.listen(app, 7001, () =>
-  console.log('Server is listening...')
+  console.log(`Server is listening at http://localhost:7001`)
 )
 
 // And then attach the socket.io server to the HTTP server
