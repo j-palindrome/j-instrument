@@ -2,12 +2,12 @@ import { ip } from 'address'
 //e.g server.js
 
 import express from 'express'
+import { Client, Server } from 'node-osc'
+import { exec } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
 import { Server as SocketServer } from 'socket.io'
 import ViteExpress from 'vite-express'
-import { Client, Server } from 'node-osc'
-import { exec } from 'child_process'
 
 const app = express()
 
@@ -76,6 +76,30 @@ sendOscMessage(
 io.on('connection', socket => {
   socket.on('osc', (target, route, ...value) => {
     sendOscMessage(target, route, ...value)
+  })
+  socket.on('get', (type, info, callback) => {
+    switch (type) {
+      case 'path':
+        callback(path.resolve(process.cwd(), info.relativePath))
+        break
+    }
+  })
+  socket.on('do', (type, info) => {
+    switch (type) {
+      case 'encode':
+        exec(
+          `cd ../exports && ffmpeg -i ${info.timestamp}.mov -i ${
+            info.timestamp
+          }.wav -c:v copy -c:a copy -map 0:v:0 -map 1:a:0 ${
+            info.timestamp
+          }-exp.mov && rm ${info.timestamp}.mov && rm ${
+            info.timestamp
+          }.wav && mv ${info.timestamp}-exp.mov ${new Date(info.timestamp)
+            .toISOString()
+            .slice(0, 19)
+            .replace(/[T:]/g, '-')}.mov`
+        )
+    }
   })
 
   const presetsPath = path.resolve(process.cwd(), 'presets.json')

@@ -1,11 +1,11 @@
+import { now } from 'lodash'
 import { useEffect, useState } from 'react'
-import { SocketProvider, useSocket } from './context'
-import { AppState, getters, initialGlobal, setters } from './store'
 import { Socket, io } from 'socket.io-client'
 import { AsemicCanvas, useAsemic } from '../asemic/src/Asemic'
 import LineBrush from '../asemic/src/LineBrush'
-import DashBrush from '../asemic/src/DashBrush'
-import { GroupBuilder } from '../asemic/src/Builder'
+import Button from './components/Button'
+import { SocketProvider, useSocket } from './context'
+import { AppState, initialGlobal, setters } from './store'
 
 function App() {
   const [socket, setSocket] = useState<Socket<SocketEvents, SocketEvents>>()
@@ -53,11 +53,55 @@ function App() {
       socket.close()
     }
   }, [])
+  const [lastRecord, setLastRecord] = useState(0)
 
   return (
     socket && (
       <SocketProvider socket={socket}>
         <>
+          <div>
+            <Button
+              label='record'
+              cb={state => {
+                if (state) {
+                  const nowStr = now()
+                  socket.emit(
+                    'get',
+                    'path',
+                    {
+                      relativePath: `../exports`
+                    },
+                    path => {
+                      socket.emit(
+                        'osc',
+                        'td',
+                        '/record/filename',
+                        path + `/${nowStr}.mov`
+                      )
+                      socket.emit(
+                        'osc',
+                        'max',
+                        '/record/filename',
+                        `open`,
+                        `${path}/${nowStr}.wav`
+                      )
+                      setLastRecord(nowStr)
+                      window.setTimeout(
+                        () => socket.emit('osc', 'all', '/record/status', 1),
+                        500
+                      )
+                    }
+                  )
+                } else {
+                  console.log('stop')
+                  socket.emit('osc', 'all', '/record/status', 0)
+                  socket.emit('do', 'encode', {
+                    timestamp: lastRecord
+                  })
+                }
+              }}
+            />
+          </div>
           <AsemicCanvas
             useAudio
             outputChannel={ctx => {
