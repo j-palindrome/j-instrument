@@ -24,24 +24,27 @@ const oscServer = new Server(7000, 'localhost', () => {
 })
 
 // Create an OSC client
-const oscClient = new Client('localhost', 7001)
+const maxOscClient = new Client('localhost', 7001)
+const tdOscClient = new Client('localhost', 7002)
 
 // Handle incoming OSC messages
 oscServer.on('message', msg => {
   console.log(`Received OSC message: ${msg}`)
   // You can handle the message and emit events to the socket.io clients if needed
-  io.emit('osc', ...msg)
 })
 
 // Example of sending an OSC message
-const sendOscMessage = (address: string, ...args: any[]) => {
-  oscClient.send(address, ...args, err => {
-    if (err) {
-      console.error('Error sending OSC message:', err)
-    } else {
-      console.log(`OSC message sent to ${address} with args: ${args}`)
-    }
-  })
+const sendOscMessage = (
+  target: 'max' | 'td' | 'all',
+  address: string,
+  ...args: any[]
+) => {
+  console.log(`message to`, target, address, ...args)
+
+  if (target === 'max' || target === 'all')
+    maxOscClient.send(address, ...args, () => {})
+  if (target === 'td' || target === 'all')
+    tdOscClient.send(address, ...args, () => {})
 }
 
 // Then you can use `io` to listen the `connection` event and get a socket
@@ -65,26 +68,14 @@ const updateSettings = (newSettings: Partial<typeof settings>) => {
 
 const ipAdd = ip()
 sendOscMessage(
-  '/message',
+  'max',
+  '/ip',
   `Go to http://${ipAdd}:7001 from an iPad signed into same WiFi to access UI.`
-)
-sendOscMessage('/message/ip', `http://${ipAdd}:7001`)
-sendOscMessage(
-  '/message/name',
-  `name`,
-  `presets_${new Date().toISOString().slice(0, 10)}.json`
 )
 
 io.on('connection', socket => {
-  socket.on('set', (route: string, value: any) => {
-    if (value instanceof Array) {
-      sendOscMessage(route, ...value)
-    } else {
-      if ((route.includes('file1') || route.includes('file2')) && value) {
-        value = path.resolve(settings.mediaFolder, value)
-      }
-      sendOscMessage(route, value)
-    }
+  socket.on('osc', (target, route, ...value) => {
+    sendOscMessage(target, route, ...value)
   })
 
   const presetsPath = path.resolve(process.cwd(), 'presets.json')

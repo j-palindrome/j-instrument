@@ -10,7 +10,7 @@ type ProviderProps = {
 const context = createContext<Socket<SocketEvents> | undefined>(undefined)
 
 export function useSocket() {
-  return useContext(context)
+  return useContext(context)!
 }
 
 export function SocketProvider({ socket, children }: ProviderProps) {

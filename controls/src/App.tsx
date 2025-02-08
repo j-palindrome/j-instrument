@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { SocketProvider } from './context'
+import { SocketProvider, useSocket } from './context'
 import { AppState, getters, initialGlobal, setters } from './store'
 import { Socket, io } from 'socket.io-client'
 import { AsemicCanvas, useAsemic } from '../asemic/src/Asemic'
@@ -55,33 +55,88 @@ function App() {
   }, [])
 
   return (
-    <SocketProvider socket={socket}>
-      <>
-        <AsemicCanvas
-          useAudio
-          outputChannel={ctx => {
-            switch (ctx.destination.maxChannelCount) {
-              case 32:
-                // MOTU
-                return 18
-              case 18:
-                // MacBook
-                return 2
-              default:
-                return 0
-            }
-          }}>
-          <Scene />
-        </AsemicCanvas>
-      </>
-    </SocketProvider>
+    socket && (
+      <SocketProvider socket={socket}>
+        <>
+          <AsemicCanvas
+            useAudio
+            outputChannel={ctx => {
+              switch (ctx.destination.maxChannelCount) {
+                case 32:
+                  console.log('32 outputs')
+
+                  // MOTU
+                  socket.emit(
+                    'osc',
+                    'max',
+                    '/channels/device',
+                    'BlackHole Ultralite'
+                  )
+                  socket.emit('osc', 'max', '/channels/input', 1, 2)
+                  socket.emit('osc', 'max', '/channels/output', 17, 18)
+                  socket.emit('osc', 'max', '/channels/loopback', 15, 16)
+                  // // the recording loopback from Max to TD
+                  socket.emit('osc', 'td', '/channels/loopback', 32, 33)
+                  return 18
+                case 18:
+                  // MacBook
+                  socket.emit(
+                    'osc',
+                    'max',
+                    '/channels/device',
+                    'Mac & BlackHole'
+                  )
+                  socket.emit('osc', 'max', '/channels/input', 2, 3)
+                  socket.emit('osc', 'max', '/channels/output', 1, 2)
+                  // the recording loopback from Max to TD
+                  socket.emit('osc', 'max', '/channels/loopback', 17, 18)
+                  socket.emit('osc', 'td', '/channels/loopback', 15, 16)
+                  return 2
+                default:
+                  throw new Error(
+                    'must use BlackHole with MOTU or with Mac Audio'
+                  )
+              }
+            }}>
+            <Scene />
+          </AsemicCanvas>
+        </>
+      </SocketProvider>
+    )
   )
 }
 
 export default App
 
 function Scene() {
-  const { h } = useAsemic({ audio: el => [el.cycle(440), el.cycle(440.049)] })
+  const socket = useSocket()
+  const { h } = useAsemic({
+    audio: e => [
+      e.div(
+        e.add(e.cycle(900), e.cycle(370), e.mul(e.cycle(800), 0.2)),
+        2 + 0.2
+      ),
+      e.cycle(440.049)
+    ],
+    controls: {
+      constants: {
+        click: [
+          2,
+          {
+            onClick: ev => {
+              console.log('sending 3')
+
+              socket.emit('osc', 'max', '/controls', 3)
+              // socket.emit('osc', 'td', '/freeze', freeze ? 0 )
+              return 3
+            }
+          }
+        ]
+      },
+      uniforms: {},
+      refs: {}
+    }
+  })
   return (
     <>
       <LineBrush
