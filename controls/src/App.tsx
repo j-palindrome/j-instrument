@@ -56,7 +56,7 @@ function App() {
   return (
     <SocketProvider socket={socket}>
       <>
-        <AsemicCanvas useAudio outputChannel={18}>
+        <AsemicCanvas useAudio outputChannel={20}>
           <Scene />
         </AsemicCanvas>
       </>
