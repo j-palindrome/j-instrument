@@ -57,7 +57,20 @@ function App() {
   return (
     <SocketProvider socket={socket}>
       <>
-        <AsemicCanvas useAudio outputChannel={18}>
+        <AsemicCanvas
+          useAudio
+          outputChannel={ctx => {
+            switch (ctx.destination.maxChannelCount) {
+              case 32:
+                // MOTU
+                return 18
+              case 18:
+                // MacBook
+                return 2
+              default:
+                return 0
+            }
+          }}>
           <Scene />
         </AsemicCanvas>
       </>
@@ -68,7 +81,7 @@ function App() {
 export default App
 
 function Scene() {
-  const { h } = useAsemic()
+  const { h } = useAsemic({ audio: el => [el.cycle(440), el.cycle(440.049)] })
   return (
     <>
       <LineBrush

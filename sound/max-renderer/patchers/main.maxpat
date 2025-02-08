@@ -13,12 +13,151 @@
 		"rect" : [ 168.0, 192.0, 704.0, 574.0 ],
 		"default_fontsize" : 10.0,
 		"default_fontname" : "Fira Code Regular",
-		"gridonopen" : 2,
 		"gridsize" : [ 15.0, 15.0 ],
 		"gridsnaponopen" : 2,
 		"style" : "Joshua",
 		"subpatcher_template" : "Joshua",
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-55",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 478.0, 450.0, 50.0, 21.0 ],
+					"text" : "2 3"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-52",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 645.0, 270.0, 82.0, 21.0 ],
+					"text" : "set $1, bang"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-48",
+					"items" : [ "None", ",", "EPSON PJ", ",", "BlackHole 16ch", ",", "BlackHole 2ch", ",", "BlackHole 64ch", ",", "MacBook Air Speakers", ",", "NDI Audio", ",", "ZoomAudioDevice", ",", "UltraLite & BlackHole", ",", "Mac & BlackHole" ],
+					"maxclass" : "umenu",
+					"numinlets" : 1,
+					"numoutlets" : 3,
+					"outlettype" : [ "int", "", "" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 630.0, 297.931938529014587, 156.667541999999997, 21.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 13.0,
+					"id" : "obj-47",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "int" ],
+					"patching_rect" : [ 630.0, 239.0, 110.0, 23.0 ],
+					"text" : "adstatus option 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-40",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
+					"patching_rect" : [ 418.0, 180.0, 100.0, 21.0 ],
+					"text" : "loadbang"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "bang", "bang" ],
+					"patching_rect" : [ 418.0, 210.0, 100.0, 21.0 ],
+					"text" : "bangbang 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-39",
+					"maxclass" : "newobj",
+					"numinlets" : 3,
+					"numoutlets" : 3,
+					"outlettype" : [ "", "", "" ],
+					"patching_rect" : [ 486.833771000000013, 345.0, 298.0, 21.0 ],
+					"text" : "route \"UltraLite & BlackHole\" \"Mac & BlackHole\""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-36",
+					"items" : [ "None", ",", "NDI Audio", ",", "BlackHole 16ch", ",", "BlackHole 2ch", ",", "BlackHole 64ch", ",", "MacBook Air Microphone", ",", "ZoomAudioDevice", ",", "UltraLite & BlackHole", ",", "Mac & BlackHole" ],
+					"maxclass" : "umenu",
+					"numinlets" : 1,
+					"numoutlets" : 3,
+					"outlettype" : [ "int", "", "" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 418.0, 298.0, 156.667541999999997, 21.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 418.0, 298.0, 156.667541999999997, 21.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 13.0,
+					"id" : "obj-38",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "int" ],
+					"patching_rect" : [ 418.0, 255.0, 110.0, 23.0 ],
+					"text" : "adstatus option 0"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-23",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 626.5, 386.0, 50.0, 21.0 ],
+					"text" : "2 3"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-8",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 487.0, 386.0, 50.0, 21.0 ],
+					"text" : "19 20"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-3",
 					"maxclass" : "newobj",
@@ -36,7 +175,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 342.0, 491.0, 119.0, 21.0 ],
+					"patching_rect" : [ 342.0, 494.0, 119.0, 21.0 ],
 					"text" : "mc.s~ OUT @chans 2"
 				}
 
@@ -48,8 +187,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "multichannelsignal" ],
-					"patching_rect" : [ 342.0, 450.0, 100.0, 21.0 ],
-					"text" : "mc.adc~ 19 20"
+					"patching_rect" : [ 342.0, 450.0, 76.0, 21.0 ],
+					"text" : "mc.adc~ 0 1"
 				}
 
 			}
@@ -629,7 +768,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 291.888113021850586, 1169.510499536991119, 50.0, 21.0 ],
-									"text" : "41 0"
+									"text" : "42 0"
 								}
 
 							}
@@ -1308,7 +1447,7 @@
 
 							}
  ],
-						"originid" : "pat-8",
+						"originid" : "pat-74",
 						"styles" : [ 							{
 								"name" : "Joshua",
 								"default" : 								{
@@ -1513,6 +1652,20 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-36", 0 ],
+					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-38", 0 ],
+					"source" : [ "obj-2", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-15", 0 ],
 					"source" : [ "obj-20", 0 ]
 				}
@@ -1529,6 +1682,22 @@
 				"patchline" : 				{
 					"destination" : [ "obj-20", 0 ],
 					"source" : [ "obj-22", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-12", 0 ],
+					"order" : 1,
+					"source" : [ "obj-23", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-55", 1 ],
+					"order" : 0,
+					"source" : [ "obj-23", 0 ]
 				}
 
 			}
@@ -1583,8 +1752,91 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-38", 0 ],
+					"midpoints" : [ 427.5, 326.718902749999984, 409.251948999999968, 326.718902749999984, 409.251948999999968, 254.381729000000007, 427.5, 254.381729000000007 ],
+					"source" : [ "obj-36", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-39", 0 ],
+					"order" : 1,
+					"source" : [ "obj-36", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-52", 0 ],
+					"order" : 0,
+					"source" : [ "obj-36", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-36", 0 ],
+					"source" : [ "obj-38", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-23", 0 ],
+					"source" : [ "obj-39", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-8", 0 ],
+					"source" : [ "obj-39", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
 					"source" : [ "obj-4", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-2", 0 ],
+					"order" : 1,
+					"source" : [ "obj-40", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-47", 0 ],
+					"order" : 0,
+					"source" : [ "obj-40", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-48", 0 ],
+					"source" : [ "obj-47", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-47", 0 ],
+					"midpoints" : [ 639.5, 328.931938529014587, 607.934636019868776, 328.931938529014587, 607.934636019868776, 224.436029336880893, 639.5, 224.436029336880893 ],
+					"source" : [ "obj-48", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-48", 0 ],
+					"source" : [ "obj-52", 0 ]
 				}
 
 			}
@@ -1604,13 +1856,29 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-12", 0 ],
+					"order" : 1,
+					"source" : [ "obj-8", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-55", 1 ],
+					"order" : 0,
+					"source" : [ "obj-8", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-79", 0 ],
 					"source" : [ "obj-90", 0 ]
 				}
 
 			}
  ],
-		"originid" : "pat-6",
+		"originid" : "pat-72",
 		"parameters" : 		{
 			"obj-19" : [ "live.gain~", "live.gain~", 0 ],
 			"obj-20" : [ "live.gain~[1]", "live.gain~", 0 ],
