@@ -44,143 +44,18 @@ export type PresetValue<
   ? string
   : undefined
 
-export type MeshPreset = {
-  nurbs_speed: PresetValue<'slider'>
-  nurbs_strength: PresetValue<'slider'>
-  nurbs_scale: PresetValue<'slider'>
-  nurbs_curvature: PresetValue<'slider'>
-  nurbs_random: PresetValue<'trigger'>
-  mesh_pointSize: PresetValue<'slider'>
-  mesh_enable: PresetValue<'boolean'>
-  mesh_drawMode: PresetValue<'string'>
-  mesh_position: PresetValue<'list'>
-  mesh_rotatexyz: PresetValue<'list'>
-  color_brightness: PresetValue<'slider'>
-  color_contrast: PresetValue<'slider'>
-  color_saturation: PresetValue<'slider'>
-  color_hue: PresetValue<'slider'>
-  color_alpha: PresetValue<'slider'>
-  sorting_scramble: PresetValue<'slider'>
-  sorting_trigger: PresetValue<'trigger'>
-  warping_type: PresetValue<'string'>
-  warping_strength: PresetValue<'slider'>
-  warping_speed: PresetValue<'slider'>
-  warping_smooth: PresetValue<'slider'>
-  warping_sound: PresetValue<'slider'>
-  warping_scale: PresetValue<'slider'>
-  warping_soundType: PresetValue<'string'>
-  warping_soundScale: PresetValue<'slider'>
-  mouse_sensitivity: PresetValue<'slider'>
-  other_dim: PresetValue<'slider'>
-  mesh_scale: PresetValue<'string'>
-  other_source: PresetValue<'string'>
-  other_source2: PresetValue<'string'>
-  other_sourcefade: PresetValue<'slider'>
-}
-
 export type GlobalPreset = {
   video_file1: string
   video_file2: string
   video_noise: string
 }
 
-type MeshPresets = [MeshPreset, MeshPreset, GlobalPreset]
-
 export type AppState = {
-  preset: MeshPresets
-  presets: Record<string, MeshPresets>
+  preset: GlobalPreset
+  presets: Record<string, GlobalPreset>
   currentPreset: string | undefined
   files: string[]
-  index: 0 | 1
 }
-
-export const presetDescription: {
-  [K in keyof MeshPreset]: PresetValueDescription<
-    'boolean' | 'slider' | 'string' | 'trigger' | 'list' | 'select'
-  >
-} = {
-  mesh_position: { type: 'list', default: [0, 0, 0] },
-  mesh_rotatexyz: { type: 'list', default: [0, 0, 0] },
-  mesh_enable: { type: 'boolean', default: 1 },
-  nurbs_speed: { type: 'slider', default: 0 },
-  nurbs_curvature: { type: 'slider', default: 0 },
-  nurbs_scale: { type: 'slider', default: 0 },
-  nurbs_random: { type: 'trigger', default: 'bang' },
-  mesh_pointSize: { type: 'slider', default: 0 },
-  mesh_drawMode: {
-    type: 'string',
-    values: [
-      'tri_grid',
-      'points',
-      'line_strip',
-      'line_loop',
-      'lines',
-      'lines_adjacency',
-      'line_strip_adjacency'
-    ],
-    default: 'tri_grid'
-  },
-  mesh_scale: {
-    type: 'string',
-    values: ['1:1', '4:3', '16:9'],
-    default: '16:9'
-  },
-  color_brightness: { type: 'slider', default: 0.5 },
-  color_contrast: { type: 'slider', default: 0.5 },
-  color_saturation: { type: 'slider', default: 0.5 },
-  color_hue: { type: 'slider', default: 0.5 },
-  color_alpha: { type: 'slider', default: 1 },
-  sorting_scramble: { type: 'slider', default: 0 },
-  sorting_trigger: { type: 'trigger', default: 'bang' },
-  warping_type: {
-    type: 'string',
-    values: [
-      'simplex',
-      'cell',
-      'checker',
-      'distorted',
-      'voronoi',
-      'gradient',
-      'value.cubicspline'
-    ],
-    default: 'simplex'
-  },
-  warping_soundType: {
-    type: 'string',
-    values: ['ripple', 'cell'],
-    default: 'ripple'
-  },
-  warping_sound: { type: 'slider', default: 0 },
-  warping_speed: { type: 'slider', default: 0 },
-  warping_strength: { type: 'slider', default: 0 },
-  warping_smooth: { type: 'slider', default: 0 },
-  warping_scale: { type: 'slider', default: 0 },
-  warping_soundScale: { type: 'slider', default: 0 },
-  mouse_sensitivity: { type: 'slider', default: 0.5 },
-  other_dim: { type: 'slider', default: 0.2 },
-  other_source: {
-    type: 'string',
-    values: ['file1', 'file2', 'colour', 'text', 'noise', 'colour_organ'],
-    default: 'file1'
-  },
-  other_source2: {
-    type: 'string',
-    values: ['file1', 'file2', 'colour', 'text', 'noise', 'colour_organ'],
-    default: 'file1'
-  },
-  other_sourcefade: {
-    type: 'slider',
-    default: 0
-  },
-  nurbs_strength: { type: 'slider', default: 0 }
-}
-
-export const initialMesh = Object.fromEntries(
-  Object.keys(presetDescription).map(key => [
-    key,
-    presetDescription[key].default
-  ])
-) as MeshPreset
 
 export const initialGlobal: GlobalPreset = {
   video_file1: '',
@@ -189,11 +64,10 @@ export const initialGlobal: GlobalPreset = {
 }
 
 const initialState: AppState = {
-  preset: [initialMesh, initialMesh, initialGlobal],
+  preset: initialGlobal,
   presets: {},
-  currentPreset: undefined,
-  files: [],
-  index: 0
+  currentPreset: '0',
+  files: []
 }
 
 export const useAppStore = createWithEqualityFn<AppState>(() => initialState)
@@ -230,49 +104,29 @@ export const setters = {
       ? _.cloneDeep(currentPreset)
       : presets[name]
 
-    for (let i = 0; i < 2; i++) {
-      const thisMesh = currentPreset[i] as MeshPreset
-      setters.setPreset(i, { ...thisMesh, ...newPreset[i] }, socket)
-    }
+    setters.setPreset({ ...newPreset }, socket)
 
-    setters.setPreset(
-      'global',
-      { ...currentPreset[2], ...newPreset[2] },
-      socket
-    )
+    setters.setPreset({ ...currentPreset[2], ...newPreset[2] }, socket)
 
     modify(state => {
       state.currentPreset = name
     })
   },
-  setPreset: <K extends number | 'global'>(
-    index: K,
-    newPreset: K extends number ? Partial<MeshPreset> : Partial<GlobalPreset>,
+  setPreset: (
+    newPreset: Partial<GlobalPreset>,
     socket: Socket<SocketEvents>,
     // when setting/getting these are useful for preventing infinite loops
     { commit = true, send: sendToMax = true } = {}
   ) => {
     if (sendToMax) {
       for (let key of Object.keys(newPreset)) {
-        socket.emit(
-          'set',
-          '/' + index + '/' + key.slice(0, key.indexOf('_')),
-          key.slice(key.indexOf('_') + 1),
-          newPreset[key]
-        )
+        socket.emit('osc', key, newPreset[key])
       }
     }
 
     if (commit) {
       modify(state => {
-        for (let [key, value] of Object.entries(newPreset)) {
-          if (typeof index === 'number') {
-            state.preset[index][key] = value
-          } else if (index === 'global') {
-            // global
-            state.preset[2][key] = value
-          }
-        }
+        Object.assign(state.preset, newPreset)
       })
     }
   },
@@ -281,9 +135,5 @@ export const setters = {
 }
 
 export const getters = {
-  get: <T extends keyof AppState>(key: T) => useAppStore.getState()[key],
-  getCurrentMesh: () => {
-    const state = useAppStore.getState()
-    return state.preset[state.index]
-  }
+  get: <T extends keyof AppState>(key: T) => useAppStore.getState()[key]
 }

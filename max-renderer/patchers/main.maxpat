@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 755.0, 115.0, 651.0, 751.0 ],
+		"rect" : [ -1138.0, -35.0, 651.0, 651.0 ],
 		"default_fontsize" : 10.0,
 		"default_fontname" : "Fira Code Regular",
 		"gridsize" : [ 15.0, 15.0 ],
@@ -18,34 +18,24 @@
 		"subpatcher_template" : "Joshua",
 		"boxes" : [ 			{
 				"box" : 				{
-					"id" : "obj-3",
+					"id" : "obj-17",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 542.0, 355.0, 100.0, 21.0 ],
-					"text" : "s RENDER"
+					"patching_rect" : [ 338.0, 494.0, 119.0, 21.0 ],
+					"text" : "mc.s~ OUT @chans 2"
 				}
 
 			}
 , 			{
 				"box" : 				{
-					"args" : [ "WORLD" ],
-					"bgmode" : 0,
-					"border" : 0,
-					"clickthrough" : 0,
-					"enablehscroll" : 0,
-					"enablevscroll" : 0,
-					"id" : "obj-2",
-					"lockeddragscroll" : 0,
-					"lockedsize" : 0,
-					"maxclass" : "bpatcher",
-					"name" : "j.world.maxpat",
-					"numinlets" : 0,
+					"id" : "obj-12",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
 					"numoutlets" : 1,
-					"offset" : [ 0.0, 0.0 ],
-					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 542.0, 35.0, 402.0, 309.0 ],
-					"viewvisibility" : 1
+					"outlettype" : [ "multichannelsignal" ],
+					"patching_rect" : [ 338.0, 454.0, 100.0, 21.0 ],
+					"text" : "mc.adc~ 19 20"
 				}
 
 			}
@@ -77,7 +67,7 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-27",
-					"lastchannelcount" : 0,
+					"lastchannelcount" : 2,
 					"maxclass" : "mc.live.gain~",
 					"numinlets" : 1,
 					"numoutlets" : 4,
@@ -1304,7 +1294,7 @@
 
 							}
  ],
-						"originid" : "pat-14",
+						"originid" : "pat-12",
 						"styles" : [ 							{
 								"name" : "Joshua",
 								"default" : 								{
@@ -1337,7 +1327,7 @@
  ]
 					}
 ,
-					"patching_rect" : [ 405.0, 15.0, 52.0, 21.0 ],
+					"patching_rect" : [ 405.0, 30.0, 52.0, 21.0 ],
 					"saved_object_attributes" : 					{
 						"fontname" : "Fira Code Regular",
 						"fontsize" : 10.0,
@@ -1356,7 +1346,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 405.0, 60.0, 107.0, 21.0 ],
+					"patching_rect" : [ 405.0, 75.0, 107.0, 21.0 ],
 					"text" : "prepend /note-in"
 				}
 
@@ -1367,7 +1357,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 405.0, 105.0, 33.0, 21.0 ],
+					"patching_rect" : [ 405.0, 112.0, 33.0, 21.0 ],
 					"text" : "s IN"
 				}
 
@@ -1403,7 +1393,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 195.0, 75.0, 144.0, 21.0 ],
-					"text" : "udpsend localhost 7002"
+					"text" : "udpsend localhost 7000"
 				}
 
 			}
@@ -1413,7 +1403,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 225.0, 495.0, 76.0, 21.0 ],
+					"patching_rect" : [ 225.0, 494.0, 76.0, 21.0 ],
 					"text" : "mc.dac~ 1 2"
 				}
 
@@ -1481,6 +1471,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-17", 0 ],
+					"source" : [ "obj-12", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-9", 0 ],
 					"source" : [ "obj-13", 0 ]
 				}
@@ -1497,13 +1494,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-5", 0 ],
 					"source" : [ "obj-19", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-3", 0 ],
-					"source" : [ "obj-2", 0 ]
 				}
 
 			}
@@ -1599,7 +1589,7 @@
 
 			}
  ],
-		"originid" : "pat-12",
+		"originid" : "pat-10",
 		"parameters" : 		{
 			"obj-19" : [ "live.gain~", "live.gain~", 0 ],
 			"obj-20" : [ "live.gain~[1]", "live.gain~", 0 ],
@@ -1616,14 +1606,7 @@
 			"inherited_shortname" : 1
 		}
 ,
-		"dependency_cache" : [ 			{
-				"name" : "j.world.maxpat",
-				"bootpath" : "~/Documents/GitHub/j/patchers",
-				"patcherrelativepath" : "../../../j/patchers",
-				"type" : "JSON",
-				"implicit" : 1
-			}
- ],
+		"dependency_cache" : [  ],
 		"autosave" : 0,
 		"styles" : [ 			{
 				"name" : "Joshua",

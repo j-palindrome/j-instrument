@@ -24,12 +24,12 @@ const oscServer = new Server(7000, 'localhost', () => {
 
 // Create an OSC client
 const oscClient = new Client('localhost', 7001)
-oscClient.send(['thing', 200])
+
 // Handle incoming OSC messages
 oscServer.on('message', msg => {
   console.log(`Received OSC message: ${msg}`)
   // You can handle the message and emit events to the socket.io clients if needed
-  io.emit('oscMessage', msg)
+  io.emit('osc', ...msg)
 })
 
 // Example of sending an OSC message
@@ -63,26 +63,26 @@ const updateSettings = (newSettings: Partial<typeof settings>) => {
 }
 
 const ipAdd = ip()
-oscClient.send([
+sendOscMessage(
   '/message',
   `Go to http://${ipAdd}:7001 from an iPad signed into same WiFi to access UI.`
-])
-oscClient.send(['/message/ip', `http://${ipAdd}:7001`])
-oscClient.send([
+)
+sendOscMessage('/message/ip', `http://${ipAdd}:7001`)
+sendOscMessage(
   '/message/name',
   `name`,
   `presets_${new Date().toISOString().slice(0, 10)}.json`
-])
+)
 
 io.on('connection', socket => {
-  socket.on('set', (route: string, property: string, value: any) => {
+  socket.on('set', (route: string, value: any) => {
     if (value instanceof Array) {
-      oscClient.send([route, property, ...value])
+      sendOscMessage(route, ...value)
     } else {
-      if ((property === 'file1' || property === 'file2') && value) {
+      if ((route.includes('file1') || route.includes('file2')) && value) {
         value = path.resolve(settings.mediaFolder, value)
       }
-      oscClient.send([route, property, value])
+      sendOscMessage(route, value)
     }
   })
 
@@ -123,27 +123,5 @@ io.on('connection', socket => {
     }
   })
 
-  oscServer.addListener('setPresetsFile', (file: string) => {
-    try {
-      const fileContents = fs.readFileSync(file, 'utf-8')
-      fs.writeFileSync(
-        path.resolve(process.cwd(), 'presets.json'),
-        fileContents
-      )
-      socket.emit('setPresets', fileContents)
-    } catch (err) {
-      console.log('failed')
-    }
-  })
   readFiles()
-
-  oscServer.addListener('/savePresetsFile', (file: string) => {
-    socket.emit('getPresets', presets => {
-      fs.promises.writeFile(file, presets)
-    })
-  })
-
-  oscServer.addListener('/spaceMouse', (...data) => {
-    socket.emit('getSpaceMouse', data.slice(0, 3), data.slice(3, 6))
-  })
 })
