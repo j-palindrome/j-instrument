@@ -5,3 +5,4 @@ electron/out
 .DS_Store
 assets
 exports/*
+node_modules
