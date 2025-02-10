@@ -1,7 +1,11 @@
 import type { Config } from 'tailwindcss'
 
 export default {
-  content: ['src/**/*.{tsx,css}', 'index.html'],
+  content: [
+    './src/controls/**/*.{tsx,css}',
+    './libs/oscPresets/**/*.{tsx.css}',
+    'index.html'
+  ],
   theme: {
     fontFamily: {
       sans: 'Andale Mono',

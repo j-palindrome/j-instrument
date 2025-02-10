@@ -1,16 +1,15 @@
+import Button from '@libs/util/react/components/Toggle'
 import { now } from 'lodash'
 import { useState } from 'react'
 import { AsemicCanvas, useAsemic } from '../../libs/asemic/src/Asemic'
 import LineBrush from '../../libs/asemic/src/LineBrush'
 import { useSocket } from '../../libs/oscPresets/components/context'
-import { OscFrame } from '../../libs/oscPresets/components/OscFrame'
-import Button from '@libs/util/react/components/Toggle'
 
 function App() {
   const socket = useSocket()
   const [lastRecord, setLastRecord] = useState(0)
   return (
-    <OscFrame>
+    <>
       <div>
         <Button
           label='record'
@@ -89,7 +88,7 @@ function App() {
         }}>
         <Scene />
       </AsemicCanvas>
-    </OscFrame>
+    </>
   )
 }
 
