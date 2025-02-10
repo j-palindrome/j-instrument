@@ -2,7 +2,7 @@
 	path = libs/asemic
 	url = https://github.com/j-palindrome/asemic.git
 [submodule "controls/oscPresets"]
-	path = controls/oscPresets
+	path = libs/oscPresets
 	url = https://github.com/j-palindrome/oscPresets.git
 [submodule "controls/util"]
 	path = libs/util
