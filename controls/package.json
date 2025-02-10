@@ -7,8 +7,8 @@
     "dev": "pnpm launch:web ; pnpm launch:max ; pnpm launch:td ; pnpm serve",
     "serve": "nodemon --watch src/server src/server/index.ts",
     "launch:web": "lsof -c Google | grep localhost | grep callback || open -na 'Google Chrome' --args --new-window http://localhost:7001",
-    "launch:max": "lsof -c Max | grep max-renderer || open ../sound/max-renderer/max-renderer.maxproj",
-    "launch:td": "lsof -c Touch | grep touchdesigner-renderer || open ../visuals/touchdesigner-renderer.toe",
+    "launch:max": "lsof -c Max | grep sound || open ../sound/sound.maxproj",
+    "launch:td": "lsof -c Touch | grep visuals || open ../visuals/visuals.toe",
     "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
