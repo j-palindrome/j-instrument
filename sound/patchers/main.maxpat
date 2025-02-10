@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 168.0, 192.0, 848.0, 444.0 ],
+		"rect" : [ 34.0, 115.0, 1004.0, 751.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"gridsnaponopen" : 2,
 		"style" : "Joshua",
@@ -30,14 +30,14 @@
 					"numinlets" : 0,
 					"numoutlets" : 0,
 					"offset" : [ 0.0, 0.0 ],
-					"patching_rect" : [ 15.0, 15.0, 285.0, 270.0 ],
+					"patching_rect" : [ 30.0, 15.0, 285.0, 270.0 ],
 					"viewvisibility" : 1
 				}
 
 			}
  ],
 		"lines" : [  ],
-		"originid" : "pat-78",
+		"originid" : "pat-6",
 		"parameters" : 		{
 			"obj-1::obj-12" : [ "live.toggle", "live.toggle", 0 ],
 			"obj-1::obj-19" : [ "live.gain~", "IN1", 0 ],
@@ -61,8 +61,8 @@
 			}
 , 			{
 				"name" : "oscFrame.maxpat",
-				"bootpath" : "~/Documents/GitHub/j-instrument/controls/oscPresets/max",
-				"patcherrelativepath" : "../../controls/oscPresets/max",
+				"bootpath" : "~/Documents/GitHub/j-instrument/controls/libs/oscPresets/max",
+				"patcherrelativepath" : "../../controls/libs/oscPresets/max",
 				"type" : "JSON",
 				"implicit" : 1
 			}

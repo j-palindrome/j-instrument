@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm launch:max ; pnpm launch:td ; pnpm serve",
-    "serve": "nodemon --watch src/server src/server/index.ts",
+    "serve": "tsx src/server/index.ts",
     "launch:web": "lsof -c Google | grep localhost | grep callback || open -na 'Google Chrome' --args --new-window http://localhost:7001",
-    "launch:max": "lsof -c Max | grep sound || open ../sound/sound.maxproj",
-    "launch:td": "lsof -c Touch | grep visuals || open ../visuals/visuals.toe",
+    "launch:max": "lsof -c Max | grep sound$ || open ../sound/sound.maxproj",
+    "launch:td": "lsof -c Touch | grep visuals$ || open ../visuals/visuals.toe",
     "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
@@ -25,6 +25,8 @@
     "react-router": "^7.1.5",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.7.3",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.2",
     "vite-express": "^0.13.0",
     "zustand": "^4.4.7"
   },
