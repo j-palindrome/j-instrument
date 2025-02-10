@@ -1,7 +1,7 @@
-import { PresetValue } from './store'
+import { AppState, PresetValue, Schema } from './store'
 
 declare global {
-  type SocketEvents = {
+  type SocketEvents<T extends Schema> = {
     do: <T extends { type: 'encode'; info: { timestamp: number } }>(
       type: T['type'],
       info: T['info']
@@ -17,14 +17,12 @@ declare global {
       info: T['info'],
       callback: T['callback']
     ) => void
-    loadPresets: (callback: (presets: string) => void) => void
-    savePresets: (presets: Record<string, object>) => void
+    load: (callback: (presets: AppState<T>['presets']) => void) => void
+    save: (presets: AppState<T>['presets']) => void
     osc: (
       target: 'max' | 'td' | 'all',
       path: string,
       ...value: PresetValue['value']
     ) => void
-    set: (path: string, value: any) => void
-    setFiles: (files: string[]) => void
   }
 }

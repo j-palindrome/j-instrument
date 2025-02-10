@@ -1,103 +1,80 @@
 import { produce } from 'immer'
 import _ from 'lodash'
-import { useRef } from 'react'
 import { Socket } from 'socket.io-client'
 import { createWithEqualityFn } from 'zustand/traditional'
+import config from './config'
 
-export type PresetValueDescription<
-  K extends 'slider' | 'boolean' | 'string' | 'trigger' | 'list' | 'select'
-> = {
-  type: K
-  values?: K extends 'string'
-    ? string[]
-    : K extends 'select'
-    ? (state: AppState) => string[]
-    : undefined
-  default: K extends 'slider'
-    ? number
-    : K extends 'boolean'
-    ? boolean
-    : K extends 'string'
-    ? string
-    : K extends 'trigger'
-    ? 'bang' | null
-    : K extends 'list'
-    ? number[]
-    : K extends 'select'
-    ? string
-    : undefined
+export type PresetValueDescription =
+  | { type: 'slider'; default: number }
+  | { type: 'boolean'; default: boolean }
+  | { type: 'string'; default: string }
+  | { type: 'trigger'; default: undefined }
+  | { type: 'list'; default: number[] }
+  | {
+      type: 'select'
+      default: string
+      options: string[]
+      display: 'menu' | 'dropdown'
+    }
+  | { type: 'xy'; default: [number, number]; bounds: [number, number] }
+
+export type Schema = Record<string, PresetValueDescription>
+export type SchemaPreset<T extends Schema> = {
+  [K in keyof T]: Partial<Omit<T[K], 'type'>> & { value: T[K]['default'] }
 }
 
-export type PresetValue<
-  K extends 'slider' | 'boolean' | 'string' | 'trigger' | 'list' | 'select'
-> = K extends 'slider'
-  ? number
-  : K extends 'boolean'
-  ? boolean
-  : K extends 'trigger'
-  ? 'bang' | null
-  : K extends 'string'
-  ? string
-  : K extends 'list'
-  ? number[]
-  : K extends 'select'
-  ? string
-  : undefined
-
-export type GlobalPreset = {
-  video_file1: string
-  video_file2: string
-  video_noise: string
+export type AppState<T extends Schema> = {
+  schema: T
+  preset: SchemaPreset<T>
+  presets: SchemaPreset<T>[]
+  currentPreset: number
 }
 
-export type AppState = {
-  preset: GlobalPreset
-  presets: Record<string, GlobalPreset>
-  currentPreset: string | undefined
-  files: string[]
+export const createSchema = <T extends Schema>(config: T) => {
+  return config
 }
 
-export const initialGlobal: GlobalPreset = {
-  video_file1: '',
-  video_file2: '',
-  video_noise: 'noise.simplex'
+const createPresetFromSchema = <T extends Schema>(
+  schema: T
+): SchemaPreset<T> => {
+  const schemaPreset = {} as SchemaPreset<T>
+  for (let key of Object.keys(schema)) {
+    ;(schemaPreset as any)[key] = { value: schema[key].default }
+  }
+  return schemaPreset
 }
 
-const initialState: AppState = {
-  preset: initialGlobal,
-  presets: {},
-  currentPreset: '0',
-  files: []
+const createStateFromSchema = <T extends Schema>(schema: T): AppState<T> => {
+  return {
+    schema,
+    preset: createPresetFromSchema(schema),
+    presets: [],
+    currentPreset: 0
+  }
 }
+const initialState = createStateFromSchema(config)
 
-export const useAppStore = createWithEqualityFn<AppState>(() => initialState)
-export const useAppStoreRef = <T>(callback: (state: AppState) => T) => {
-  const storeValue: T = useAppStore(callback)
-  const storeValueRef = useRef(storeValue)
-  storeValueRef.current = storeValue
-  return [storeValue, storeValueRef] as [
-    typeof storeValue,
-    typeof storeValueRef
-  ]
-}
+export const useAppStore = createWithEqualityFn(() => initialState)
 
-const modify = (modifier: (state: AppState) => void) =>
+const modify = (modifier: (state: typeof initialState) => void) =>
   useAppStore.setState(produce(modifier))
 
+export type PresetSocket = Socket<{}, SocketEvents<typeof config>>
+
 export const setters = {
-  savePreset: (name: string, socket: Socket<SocketEvents, SocketEvents>) => {
+  savePreset: (index: number, socket: PresetSocket) => {
     modify(state => {
-      state.presets[name] = _.cloneDeep(state.preset)
-      socket.emit('savePresets', state.presets)
+      state.presets[index] = _.cloneDeep(state.preset)
+      socket.emit('save', state.presets)
     })
   },
-  deletePreset: (name: string, socket: Socket<SocketEvents, SocketEvents>) => {
+  deletePreset: (name: number, socket: PresetSocket) => {
     modify(state => {
-      delete state.presets[name]
-      socket.emit('savePresets', state.presets)
+      state.presets.splice(name, 1)
+      socket.emit('save', state.presets)
     })
   },
-  loadPreset: (name: string, socket: Socket<SocketEvents, SocketEvents>) => {
+  loadPreset: (name: number, socket: PresetSocket) => {
     const presets = getters.get('presets')
     const currentPreset = getters.get('preset')
     const newPreset = !presets[name]
@@ -106,21 +83,19 @@ export const setters = {
 
     setters.setPreset({ ...newPreset }, socket)
 
-    setters.setPreset({ ...currentPreset[2], ...newPreset[2] }, socket)
-
     modify(state => {
       state.currentPreset = name
     })
   },
   setPreset: (
-    newPreset: Partial<GlobalPreset>,
-    socket: Socket<SocketEvents>,
+    newPreset: Partial<SchemaPreset<typeof config>>,
+    socket: PresetSocket,
     // when setting/getting these are useful for preventing infinite loops
     { commit = true, send: sendToMax = true } = {}
   ) => {
     if (sendToMax) {
       for (let key of Object.keys(newPreset)) {
-        socket.emit('osc', key, newPreset[key])
+        socket.emit('osc', 'all', key, newPreset[key])
       }
     }
 
@@ -130,10 +105,10 @@ export const setters = {
       })
     }
   },
-  set: (newState: Partial<AppState>) => modify(() => newState),
-  modify: (modifier: (oldState: AppState) => void) => modify(modifier)
+  set: (newState: Partial<AppState<typeof config>>) => modify(() => newState)
 }
 
 export const getters = {
-  get: <T extends keyof AppState>(key: T) => useAppStore.getState()[key]
+  get: <T extends keyof AppState<typeof config>>(key: T) =>
+    useAppStore.getState()[key]
 }

@@ -1,14 +1,14 @@
 import { now } from 'lodash'
 import { useEffect, useState } from 'react'
-import { Socket, io } from 'socket.io-client'
-import { AsemicCanvas, useAsemic } from '../asemic/src/Asemic'
-import LineBrush from '../asemic/src/LineBrush'
+import { io } from 'socket.io-client'
+import { AsemicCanvas, useAsemic } from '../libs/asemic/src/Asemic'
+import LineBrush from '../libs/asemic/src/LineBrush'
 import Button from './components/Button'
 import { SocketProvider, useSocket } from './context'
-import { AppState, initialGlobal, setters } from './store'
+import { PresetSocket, setters } from './store'
 
 function App() {
-  const [socket, setSocket] = useState<Socket<SocketEvents, SocketEvents>>()
+  const [socket, setSocket] = useState<PresetSocket>()
 
   useEffect(() => {
     navigator.mediaDevices.enumerateDevices().then(devices => {
@@ -18,35 +18,21 @@ function App() {
   }, [])
 
   useEffect(() => {
-    const socket: Socket<SocketEvents, SocketEvents> = io()
+    const socket: PresetSocket = io()
     setSocket(socket)
 
-    socket.emit('loadPresets', presets => {
-      const newPresets: AppState['presets'] = JSON.parse(presets)
-      const defaultKeys = Object.keys(initialGlobal)
-
-      for (let value of Object.values(newPresets)) {
-        for (let key of defaultKeys) {
-          if (value[key] === undefined) {
-            value[key] = initialGlobal[key]
-          }
-        }
-      }
+    socket.emit('load', presets => {
+      // for (let value of Object.values(presets)) {
+      //   for (let key of defaultKeys) {
+      //     if (value[key] === undefined) {
+      //       value[key] = initialGlobal[key]
+      //     }
+      //   }
+      // }
 
       setters.set({
-        presets: newPresets
+        presets
       })
-    })
-
-    socket.on('setFiles', files => {
-      setters.set({ files })
-      setters.setPreset(
-        {
-          video_file1: files[0] ?? undefined,
-          video_file2: files[0] ?? undefined
-        },
-        socket
-      )
     })
 
     return () => {

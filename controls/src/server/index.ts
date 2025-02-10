@@ -8,6 +8,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { Server as SocketServer } from 'socket.io'
 import ViteExpress from 'vite-express'
+import type config from '../config'
 
 const app = express()
 
@@ -16,7 +17,7 @@ const server = ViteExpress.listen(app, 7001, () =>
 )
 
 // And then attach the socket.io server to the HTTP server
-const io = new SocketServer<SocketEvents>(server)
+const io = new SocketServer<SocketEvents<typeof config>>(server)
 
 // Create an OSC server
 const oscServer = new Server(7000, 'localhost', () => {
@@ -47,31 +48,8 @@ const sendOscMessage = (
     tdOscClient.send(address, ...args, () => {})
 }
 
-// Then you can use `io` to listen the `connection` event and get a socket
-// from a client
-
-const settings: {
-  mediaFolder: string
-} = JSON.parse(
-  fs.readFileSync(path.resolve(process.cwd(), 'settings.json')).toString()
-)
-
-const updateSettings = (newSettings: Partial<typeof settings>) => {
-  for (let key of Object.keys(newSettings)) {
-    settings[key] = newSettings[key]
-  }
-  fs.writeFileSync(
-    path.resolve(process.cwd(), 'settings.json'),
-    JSON.stringify(settings)
-  )
-}
-
 const ipAdd = ip()
-sendOscMessage(
-  'max',
-  '/ip',
-  `Go to http://${ipAdd}:7001 from an iPad signed into same WiFi to access UI.`
-)
+sendOscMessage('max', '/ip', `http://${ipAdd}:7001`)
 
 io.on('connection', socket => {
   socket.on('osc', (target, route, ...value) => {
@@ -108,36 +86,14 @@ io.on('connection', socket => {
   }
   let presets = fs.readFileSync(presetsPath).toString()
 
-  socket.on('loadPresets', callback => {
-    callback(presets)
+  socket.on('load', callback => {
+    callback(JSON.parse(presets))
   })
 
-  socket.on('savePresets', presets => {
+  socket.on('save', presets => {
     fs.promises.writeFile(
       path.resolve(process.cwd(), 'presets.json'),
       JSON.stringify(presets)
     )
   })
-
-  const readFiles = () => {
-    if (!settings.mediaFolder) return
-    try {
-      const files = fs
-        .readdirSync(settings.mediaFolder)
-        .filter(file =>
-          /\.(mov|mp4|m4a|png|jpg|aif|gif|webm|webp|vlc)$/.test(file)
-        )
-      socket.emit('setFiles', files)
-    } catch (err) {}
-  }
-  oscServer.addListener('/setMediaFolder', (folder: string) => {
-    try {
-      updateSettings({ mediaFolder: folder })
-      readFiles()
-    } catch (err) {
-      updateSettings({ mediaFolder: '' })
-    }
-  })
-
-  readFiles()
 })
