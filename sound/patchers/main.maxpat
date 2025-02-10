@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ -1246.0, -109.0, 847.0, 875.0 ],
+		"rect" : [ 34.0, 115.0, 1007.0, 751.0 ],
 		"default_fontsize" : 10.0,
 		"default_fontname" : "Fira Code Regular",
 		"gridsize" : [ 15.0, 15.0 ],
@@ -116,7 +116,7 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-39",
-					"items" : [ "None", ",", "EPSON PJ", ",", "BlackHole 16ch", ",", "BlackHole 2ch", ",", "BlackHole 64ch", ",", "MacBook Air Speakers", ",", "NDI Audio", ",", "UltraLite AVB", ",", "ZoomAudioDevice", ",", "UltraLite & BlackHole", ",", "Mac & BlackHole", ",", "BlackHole Ultralite" ],
+					"items" : [ "None", ",", "BlackHole 16ch", ",", "BlackHole 2ch", ",", "BlackHole 64ch", ",", "MacBook Air Speakers", ",", "NDI Audio", ",", "ZoomAudioDevice", ",", "UltraLite & BlackHole", ",", "Mac & BlackHole", ",", "BlackHole Ultralite" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -143,7 +143,7 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-36",
-					"items" : [ "None", ",", "NDI Audio", ",", "BlackHole 16ch", ",", "BlackHole 2ch", ",", "BlackHole 64ch", ",", "MacBook Air Microphone", ",", "UltraLite AVB", ",", "ZoomAudioDevice", ",", "UltraLite & BlackHole", ",", "Mac & BlackHole", ",", "BlackHole Ultralite" ],
+					"items" : [ "None", ",", "NDI Audio", ",", "BlackHole 16ch", ",", "BlackHole 2ch", ",", "BlackHole 64ch", ",", "MacBook Air Microphone", ",", "ZoomAudioDevice", ",", "UltraLite & BlackHole", ",", "Mac & BlackHole", ",", "BlackHole Ultralite" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -1540,7 +1540,7 @@
 
 							}
  ],
-						"originid" : "pat-8",
+						"originid" : "pat-57",
 						"styles" : [ 							{
 								"name" : "Joshua",
 								"default" : 								{
@@ -2041,7 +2041,7 @@
 
 			}
  ],
-		"originid" : "pat-6",
+		"originid" : "pat-55",
 		"parameters" : 		{
 			"obj-19" : [ "live.gain~", "live.gain~", 0 ],
 			"obj-20" : [ "live.gain~[1]", "live.gain~", 0 ],
