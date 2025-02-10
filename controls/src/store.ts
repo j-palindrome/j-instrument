@@ -30,10 +30,6 @@ export type AppState<T extends Schema> = {
   currentPreset: number
 }
 
-export const createSchema = <T extends Schema>(config: T) => {
-  return config
-}
-
 const createPresetFromSchema = <T extends Schema>(
   schema: T
 ): SchemaPreset<T> => {

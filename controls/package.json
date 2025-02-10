@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "pnpm launch:web ; pnpm launch:max ; pnpm launch:td ; pnpm serve",
+    "dev": "pnpm launch:max ; pnpm launch:td ; pnpm serve",
     "serve": "nodemon --watch src/server src/server/index.ts",
     "launch:web": "lsof -c Google | grep localhost | grep callback || open -na 'Google Chrome' --args --new-window http://localhost:7001",
     "launch:max": "lsof -c Max | grep sound || open ../sound/sound.maxproj",

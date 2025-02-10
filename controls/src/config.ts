@@ -1,5 +1,5 @@
-import { createSchema } from './store'
+import type { Schema } from './store'
 
-export default createSchema({
+export default {
   '/crop': { type: 'xy', default: [0, 0], bounds: [400, 400] }
-})
+} satisfies Schema
