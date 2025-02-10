@@ -23,7 +23,7 @@ function App() {
                 'get',
                 'path',
                 {
-                  relativePath: `../exports`
+                  relativePath: `./exports`
                 },
                 path => {
                   socket.emit(

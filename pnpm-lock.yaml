@@ -150,6 +150,9 @@ importers:
 
   libs/oscPresets:
     dependencies:
+      '@types/react':
+        specifier: ^19.0.8
+        version: 19.0.8
       address:
         specifier: ^2.0.3
         version: 2.0.3
@@ -179,7 +182,7 @@ importers:
         version: 0.13.0
       zustand:
         specifier: ^4.4.7
-        version: 4.5.6(immer@10.1.1)(react@19.0.0)
+        version: 4.5.6(@types/react@19.0.8)(immer@10.1.1)(react@19.0.0)
 
   libs/util:
     dependencies:
@@ -1666,6 +1669,12 @@ packages:
     dependencies:
       '@types/prop-types': 15.7.14
       csstype: 3.1.3
+
+  /@types/react@19.0.8:
+    resolution: {integrity: sha512-9P/o1IGdfmQxrujGbIMDyYaaCykhLKc0NGCtYcECNUr9UAaDe4gwvV9bR6tvd5Br1SG0j+PBpbKr2UYY8CwqSw==}
+    dependencies:
+      csstype: 3.1.3
+    dev: false
 
   /@types/semver@7.5.8:
     resolution: {integrity: sha512-I8EUhyrgfLrcTkzV3TSsGyl1tSuPrEDzr0yd5m90UgNxQkyDXULk3b6MlQqTCpZpNtWe1K0hzclnZkTcLBe2UQ==}
@@ -4730,7 +4739,7 @@ packages:
       use-sync-external-store: 1.4.0(react@18.3.1)
     dev: false
 
-  /zustand@4.5.6(immer@10.1.1)(react@19.0.0):
+  /zustand@4.5.6(@types/react@19.0.8)(immer@10.1.1)(react@19.0.0):
     resolution: {integrity: sha512-ibr/n1hBzLLj5Y+yUcU7dYw8p6WnIVzdJbnX+1YpaScvZVF2ziugqHs+LAmHw4lWO9c/zRj+K1ncgWDQuthEdQ==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
@@ -4745,6 +4754,7 @@ packages:
       react:
         optional: true
     dependencies:
+      '@types/react': 19.0.8
       immer: 10.1.1
       react: 19.0.0
       use-sync-external-store: 1.4.0(react@19.0.0)
