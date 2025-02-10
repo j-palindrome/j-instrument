@@ -5,6 +5,8 @@ import LineBrush from '../../libs/asemic/src/LineBrush'
 import { useSocket } from '../../libs/oscPresets/components/context'
 import { OscFrame } from '../../libs/oscPresets/components/OscFrame'
 import Button from './components/Button'
+import config from './config'
+import OscPresets from '../../libs/oscPresets/components/OscPresets'
 
 function App() {
   const socket = useSocket()
@@ -53,6 +55,7 @@ function App() {
             }
           }}
         />
+        <OscPresets schema={config} />
       </div>
       <AsemicCanvas
         useAudio
