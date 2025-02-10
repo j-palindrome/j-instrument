@@ -2,9 +2,9 @@ import { now } from 'lodash'
 import { useState } from 'react'
 import { AsemicCanvas, useAsemic } from '../../libs/asemic/src/Asemic'
 import LineBrush from '../../libs/asemic/src/LineBrush'
-import { useSocket } from '../oscPresets/components/context'
-import { OscFrame } from '../oscPresets/components/OscFrame'
-import Button from './components/Button'
+import { useSocket } from '../../libs/oscPresets/components/context'
+import { OscFrame } from '../../libs/oscPresets/components/OscFrame'
+import Button from '@libs/util/react/components/Toggle'
 
 function App() {
   const socket = useSocket()

@@ -5,28 +5,18 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm launch:max ; pnpm launch:td ; pnpm serve",
-    "serve": "tsx src/server/index.ts",
-    "launch:max": "lsof -c Max | grep sound$ || open ../sound/sound.maxproj",
-    "launch:td": "lsof -c Touch | grep visuals$ || open ../visuals/visuals.toe",
+    "serve": "tsx src/controls/index.ts",
+    "launch:max": "lsof -c Max | grep sound$ || open src/sound/sound.maxproj",
+    "launch:td": "lsof -c Touch | grep visuals$ || open src/visuals/visuals.toe",
     "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@material-tailwind/react": "^2.1.10",
-    "address": "^2.0.3",
-    "express": "^4.21.2",
-    "immer": "^10.1.1",
     "lodash": "^4.17.21",
-    "node-osc": "^9.1.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router": "^7.1.5",
-    "socket.io": "^4.8.1",
-    "socket.io-client": "^4.8.1",
-    "tsx": "^4.19.2",
-    "vite-express": "^0.20.0",
-    "zustand": "^5.0.3"
+    "react-router": "^7.1.5"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.202",
@@ -35,7 +25,9 @@
     "@vitejs/plugin-react-swc": "^3.5.0",
     "autoprefixer": "^10.4.20",
     "eslint": "^8.55.0",
-    "tailwindcss": "^3.4.1",
-    "vite": "^5.0.8"
+    "tailwindcss": "^4.0.6",
+    "tsx": "^4.19.2",
+    "vite": "^5.0.8",
+    "vite-tsconfig-paths": "^5.1.4"
   }
 }

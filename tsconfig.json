@@ -22,7 +22,8 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": { "@libs/*": ["./libs/*"] }
   },
-  "include": ["src", "../libs", "oscPresets"]
+  "include": ["src", "libs"]
 }
