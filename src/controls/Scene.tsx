@@ -1,9 +1,10 @@
 import { useAsemic } from '@libs/asemic/src/Asemic'
 import LineBrush from '@libs/asemic/src/LineBrush'
-import { useSocket } from '@libs/oscPresets/components/context'
+import { useContext } from 'react'
+import { socketContext } from './store'
 
 export default function Scene() {
-  const socket = useSocket()
+  const socket = useContext(socketContext)
   const { h } = useAsemic({
     audio: e => [
       e.div(

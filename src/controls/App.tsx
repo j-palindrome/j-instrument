@@ -1,17 +1,13 @@
-import Button from '@libs/oscPresets/components/Toggle'
-import { now } from 'lodash'
-import { useState } from 'react'
-import { AsemicCanvas, useAsemic } from '../../libs/asemic/src/Asemic'
-import LineBrush from '../../libs/asemic/src/LineBrush'
-import { useSocket } from '../../libs/oscPresets/components/context'
-import { OscFrame } from '@libs/oscPresets/components/OscFrame'
 import OscPresets from '@libs/oscPresets/components/OscPresets'
+import { useContext } from 'react'
+import { AsemicCanvas } from '../../libs/asemic/src/Asemic'
 import config from '../../src/controls/config'
-import { getChannel } from './setup/sound'
 import Scene from './Scene'
+import { getChannel } from './setup/sound'
+import { socketContext } from './store'
 
 function App() {
-  const socket = useSocket()
+  const socket = useContext(socketContext)
   return (
     <>
       <OscPresets schema={config} />
