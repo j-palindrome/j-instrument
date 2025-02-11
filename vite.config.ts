@@ -5,6 +5,5 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [tailwindcss(), react(), paths()],
-  assetsInclude: ['**/*.PNG']
+  plugins: [tailwindcss(), react(), paths()]
 })
