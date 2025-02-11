@@ -1,6 +1,6 @@
 import { PresetSocket } from '@libs/oscPresets/modules/store'
 
-export const getChannel = (ctx: AudioContext, socket: PresetSocket) => {
+export const getChannel = (ctx: AudioContext, socket: PresetSocket<any>) => {
   switch (ctx.destination.maxChannelCount) {
     case 32:
       // MOTU

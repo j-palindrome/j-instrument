@@ -1,10 +1,7 @@
 import { useAsemic } from '@libs/asemic/src/Asemic'
 import LineBrush from '@libs/asemic/src/LineBrush'
-import { useContext } from 'react'
-import { socketContext } from './store'
 
 export default function Scene() {
-  const socket = useContext(socketContext)
   const { h } = useAsemic({
     audio: e => [
       e.div(
@@ -14,20 +11,7 @@ export default function Scene() {
       e.cycle(440.049)
     ],
     controls: {
-      constants: {
-        click: [
-          2,
-          {
-            onClick: ev => {
-              console.log('sending 3')
-
-              socket.emit('osc', 'max', '/controls', 3)
-              // socket.emit('osc', 'td', '/freeze', freeze ? 0 )
-              return 3
-            }
-          }
-        ]
-      },
+      constants: {},
       uniforms: {},
       refs: {}
     }
