@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { AsemicCanvas } from '../../libs/asemic/src/Asemic'
 import config from '../../src/controls/config'
-import Scene from './Scene'
+import scenes from './Scene'
 import { getChannel } from './setup/sound'
 import { OscPresets, useSocket } from './store'
 
@@ -11,7 +11,7 @@ function App() {
     <>
       <OscPresets />
       <AsemicCanvas useAudio outputChannel={ctx => getChannel(ctx, socket)}>
-        <Scene />
+        {scenes}
       </AsemicCanvas>
     </>
   )

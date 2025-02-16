@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "pnpm launch:max ; pnpm launch:td ; pnpm serve",
+    "dev": "pnpm launch:max ; pnpm launch:td ; open -a \"NDI Scan Converter\"; pnpm serve",
     "serve": "tsx src/controls/index.ts",
     "launch:max": "lsof -c Max | grep sound$ || open src/sound/sound.maxproj",
     "launch:td": "lsof -c Touch | grep visuals$ || open src/visuals/visuals.toe",
