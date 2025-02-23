@@ -1,6 +1,16 @@
 import { PresetSocket } from '@libs/oscPresets/modules/store'
 
 export const getChannel = (ctx: AudioContext, socket: PresetSocket<any>) => {
+  // navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
+  //   navigator.mediaDevices.enumerateDevices().then(devices => {
+  //     // const audioDevices = devices.filter(
+  //     //   device => device.kind === 'audioinput' || device.kind === 'audiooutput'
+  //     // )
+  //     console.log('Available audio devices:', devices)
+  //   })
+  // })
+  console.log(ctx.destination.maxChannelCount)
+
   switch (ctx.destination.maxChannelCount) {
     case 32:
       // MOTU
