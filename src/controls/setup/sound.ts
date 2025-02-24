@@ -12,6 +12,8 @@ export const getChannel = (ctx: AudioContext, socket: PresetSocket<any>) => {
   console.log(ctx.destination.maxChannelCount)
 
   switch (ctx.destination.maxChannelCount) {
+    case 2:
+      return 0
     case 32:
       // MOTU
       socket.emit('osc', 'max', '/channels/device', 'BlackHole Ultralite')
@@ -31,6 +33,6 @@ export const getChannel = (ctx: AudioContext, socket: PresetSocket<any>) => {
       socket.emit('osc', 'td', '/channels/loopback', 15, 16)
       return 2
     default:
-      throw new Error('must use BlackHole with MOTU or with Mac Audio')
+      return 0
   }
 }
